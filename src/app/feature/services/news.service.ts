@@ -14,7 +14,7 @@ export interface INewsCountryCode {
 export class NewsService {
 
 
-  private _newsCountryCode: INewsCountryCode[] = [
+  private _newsCountriesData: INewsCountryCode[] = [
     { country: 'Argentina', code: 'ar'},
     { country: 'Australia', code: 'au' },
     { country: 'Austria', code: 'at' },
@@ -85,8 +85,8 @@ export class NewsService {
     return this.http.get<IResponseTopHeadlinesNews>('');
   }
 
-  public get newsCountryCode() {
-    return this._newsCountryCode;
+  public get newsCountriesData() {
+    return this._newsCountriesData;
   }
 
 }

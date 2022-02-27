@@ -1,1 +1,24 @@
 <p>home-page works!</p>
+<app-nav-bar></app-nav-bar>
+
+<ul>
+  <li (click)="tabChange(category)" *ngFor="let category of categories">
+    {{category |  titlecase }}
+  </li>
+</ul>
+
+<div class="container">
+  <span [ngSwitch]="category">
+
+    <div class="wrapper" *ngFor="let category of categories">
+      <p *ngSwitchCase="category">
+        {{category | titlecase}}
+      </p>
+    </div>
+    
+    <p *ngSwitchDefault>
+      General
+    </p>
+
+  </span>
+</div>

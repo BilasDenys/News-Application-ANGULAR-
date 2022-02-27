@@ -1,0 +1,28 @@
+<p>nav-bar works!</p>
+
+
+<div class="navbar__country">
+  <select name="country" (change)="change($event)">
+
+    <option value="{{countryFromStore}}">Chose Country</option>
+  
+    <option 
+      value="{{country.code}}" 
+      *ngFor="let country of countries"
+    >{{  country.country }}</option>
+  
+  </select>
+</div>
+
+<div class="navbar__limit">
+
+  <select name="limit" (change)="change($event)">
+   
+    <option value="{{limit.count}}" *ngFor="let limit of limits">{{limit.title}} </option>
+  </select>
+
+</div>
+
+
+
+Country from store: {{ countryFromStore }}

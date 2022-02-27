@@ -7,7 +7,8 @@ export interface INewsStore {
   newsError: string | null,
   totalResults: number | null,
   country: string,
-  limit: number
+  limit: number,
+  category: string
 }
 
 const initialState: INewsStore = {
@@ -17,7 +18,8 @@ const initialState: INewsStore = {
   newsError: '',
   totalResults: 0,
   country: 'ua',
-  limit: 10,
+  limit: 20,
+  category: 'general'
 }
 
 export const reducer = (state = initialState, action: NewsActions) => { 
@@ -61,6 +63,11 @@ export const reducer = (state = initialState, action: NewsActions) => {
     case NewsActionTypes.SET_COUNTRY:
       return {
         ...state, country: action.payload
+      }
+    
+    case NewsActionTypes.SET_CATEGORY:
+      return {
+        ...state, category: action.payload
       }
 
     default:

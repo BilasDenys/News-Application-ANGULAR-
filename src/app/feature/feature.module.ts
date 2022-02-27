@@ -8,13 +8,15 @@ import { StoreFeatureModule, StoreModule } from '@ngrx/store';
 import { reducer } from './store/News/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { newsEffects } from './store';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
-    HomePageComponent
+    HomePageComponent,
+    NavBarComponent
   ],
   imports: [
     CommonModule,

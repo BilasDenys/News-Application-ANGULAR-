@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { GetEverythingNews } from '../../store/News/action';
+import { GetEverythingNews, SetCategory } from '../../store/News/action';
 import { INewsStore } from '../../store/News/reducer';
 
 import { getIsLoadingSelector, getLimitSelector } from '../../store/News/selectors';
@@ -14,6 +14,8 @@ import { getIsLoadingSelector, getLimitSelector } from '../../store/News/selecto
 
 export class HomePageComponent implements OnInit {
 
+  categories: string[] = ['business','entertainment','general','health','science','sports','technology'];
+  category!: string;
   constructor(
     private http: HttpClient,
     private store$: Store<INewsStore>
@@ -21,10 +23,12 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const isLoading$ = this.store$.pipe(select(getIsLoadingSelector));
-    const limit$ = this.store$.pipe(select(getLimitSelector));
+    this.category = 'general'
 
-    this.store$.dispatch(new GetEverythingNews());
+    // const isLoading$ = this.store$.pipe(select(getIsLoadingSelector));
+    // const limit$ = this.store$.pipe(select(getLimitSelector));
+
+    // this.store$.dispatch(new GetEverythingNews());
 
     // isLoading$.subscribe(status => console.log(status));
     // limit$.subscribe(limit => console.log(limit));
@@ -33,6 +37,14 @@ export class HomePageComponent implements OnInit {
     // .subscribe(response => {
     //   console.log(response);
     // })
+    
+  }
+
+  tabChange(title: string){
+    this.category = title;
+
+    this.store$.dispatch(new SetCategory(title));
+
   }
 
 }

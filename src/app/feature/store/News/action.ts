@@ -13,7 +13,8 @@ export enum NewsActionTypes {
     GET_EVERYTHING_NEWS_FAIL = '[NEWS] Get Everything News Fail',
 
     SET_LIMIT = '[NEWS] Set Limit',
-    SET_COUNTRY = '[NEWS] Set Country'
+    SET_COUNTRY = '[NEWS] Set Country',
+    SET_CATEGORY = '[NEWS] Set Category'
 
 }
 
@@ -57,6 +58,12 @@ export class SetCountry implements Action {
    constructor(public payload: string) {}
 }
 
+
+export class SetCategory implements Action {
+  readonly type = NewsActionTypes.SET_CATEGORY;
+  constructor(public payload: string) {}
+}
+
 export type  NewsActions =
     GetTopHeadlinesNews
     | GetTopHeadlinesNewsFail
@@ -65,5 +72,6 @@ export type  NewsActions =
     | GetEverythingNewsSuccess
     | GetEverythingNewsFail
     | SetLimit
-    | SetCountry
+    | SetCountry 
+    | SetCategory
 
