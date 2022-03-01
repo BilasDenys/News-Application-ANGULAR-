@@ -1,18 +1,21 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { INewsCountryCode, NewsService } from '../../services/news.service';
-import { SetCountry } from '../../store/News/action';
+import { GetEverythingNews, GetTopHeadlinesNews, SetCountry, SetLimit } from '../../store/News/action';
 import { INewsStore } from '../../store/News/reducer';
-import { getCountrySelector } from '../../store/News/selectors';
+import { getCountrySelector, getLimitSelector } from '../../store/News/selectors';
 
+
+@UntilDestroy()
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit, OnDestroy {
+
+export class NavBarComponent implements OnInit {
 
   limits = [
     {title: '20', count: 20},
@@ -34,55 +37,63 @@ export class NavBarComponent implements OnInit, OnDestroy {
     {title: '100', count: 100},
   ]
 
-  countryFromStore!: string;
-
   private _countries!: INewsCountryCode[];
-  selected: string = '';
-  private sub$!: Subscription;
-
-  form!: FormGroup;
+  public selectedCountry!: string;
+  public selectedLimit!: number;
+  public search!: string;
 
   constructor(
     private newsService: NewsService,
-    private fb: FormBuilder,
     private store$: Store<INewsStore>
   ) {}
 
   ngOnInit(): void {
     this.initialFunction();
-    this.sub$ = this.store$
-      .pipe(select(getCountrySelector))
-      .subscribe((country) => {
-        this.countryFromStore = country;
-      });
   }
 
   private initialFunction(): void {
-    this.form = this.fb.group({
-      newsCountry: ['', [Validators.required]],
-    });
+    this._countries = this.newsService.newsCountriesStaticData;
 
-    this._countries = this.newsService.newsCountriesData;
+    this.store$
+      .pipe(select( getCountrySelector ),
+       untilDestroyed(this))
+      .subscribe(( country: string ): string => this.selectedCountry = country );
+
+    this.store$
+      .pipe( select( getLimitSelector ),
+      untilDestroyed(this))
+      .subscribe( ( limit: number ): number => this.selectedLimit = limit )
   }
 
-  get countries(): INewsCountryCode[] {
+  public get countries(): INewsCountryCode[] {
     return this._countries;
   }
 
-  change(event: any) {
+  public change( event: any ): void {
+    const { name, value } = event.target;
     const countrySelectName = 'country';
 
-    if( event.target.name === countrySelectName) {
-      console.log(`${event.target.name}: ${event.target.value}`);
-      
-      this.store$.dispatch(new SetCountry(event.target.value));
+    if( name === countrySelectName ) {
+
+      this.store$.dispatch( new SetCountry( value ) );
+      this.store$.dispatch( new GetTopHeadlinesNews() );
+
     } else {
-      console.log(`${event.target.name}: ${event.target.value}`);
+
+      this.store$.dispatch( new SetLimit( +value ) );
+      this.store$.dispatch( new GetTopHeadlinesNews() );
+
     }
- 
+
   }
 
-  ngOnDestroy(): void {
-    this.sub$.unsubscribe();
+  public findSearch() {
+
+    if( this.search.trim().length != 0) {
+      this.store$.dispatch( new GetEverythingNews(this.search) )
+      this.search = '';
+    }
   }
+
 }
+  

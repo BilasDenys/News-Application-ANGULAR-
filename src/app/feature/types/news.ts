@@ -16,7 +16,7 @@ export interface ITopHeadlinesSource{
 }
 
 export interface IResponseTopHeadlinesNews {
-  totalResult: number;
+  totalResults: number;
   articles: ITopHeadlinesArticles[];
   status: string;
 }

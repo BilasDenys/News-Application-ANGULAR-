@@ -10,8 +10,8 @@ export interface IEnvironment {
 
 export const environment: IEnvironment = {
   production: false,
-  newsApiKey: '',
-  newsBaseURL: ''
+  newsApiKey: '0b523ee8e946476cb7b1f4fb913cb30f',
+  newsBaseURL: 'https://newsapi.org/v2'
 };
 
 /*

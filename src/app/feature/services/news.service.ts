@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { IResponseTopHeadlinesNews } from '../types/news';
 
 export interface INewsCountryCode {
@@ -13,8 +14,7 @@ export interface INewsCountryCode {
 })
 export class NewsService {
 
-
-  private _newsCountriesData: INewsCountryCode[] = [
+  private _newsCountriesStaticData: INewsCountryCode[] = [
     { country: 'Argentina', code: 'ar'},
     { country: 'Australia', code: 'au' },
     { country: 'Austria', code: 'at' },
@@ -70,23 +70,27 @@ export class NewsService {
     { country: 'Venuzuela', code: 've' },
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor( private http: HttpClient ) { }
+    //  /top-headlines?country=${country}&category=${category}&page=${page}
 
+  public fetchTopHeadlinesNews(params: any): Observable<IResponseTopHeadlinesNews> {
+    const { category, country, limit, currentPage } = params[1].news;
+    console.log(params[1])
+    return this.http.get<IResponseTopHeadlinesNews>(`${environment.newsBaseURL}/top-headlines?country=${country}&category=${category}&page=${currentPage}&pageSize=${limit}`);
+  }
 
- public fetchTopHeadlinesNews(): Observable<IResponseTopHeadlinesNews> {
+  public fetchEverythingNews(params: any): Observable<IResponseTopHeadlinesNews> {
+    const { payload } = params[0];
+    const { limit, currentPage } = params[1].news;
+    return this.http.get<IResponseTopHeadlinesNews>(`${environment.newsBaseURL}/top-headlines?q=${payload}&page=${currentPage}&pageSize=${limit}`);
+  }
+
+  public fetchSourcesNews(): Observable<IResponseTopHeadlinesNews> {
     return this.http.get<IResponseTopHeadlinesNews>('');
   }
 
- public fetchEverythingNews(): Observable<IResponseTopHeadlinesNews> {
-    return this.http.get<IResponseTopHeadlinesNews>('');
-  }
-
- public fetchSourcesNews(): Observable<IResponseTopHeadlinesNews> {
-    return this.http.get<IResponseTopHeadlinesNews>('');
-  }
-
-  public get newsCountriesData() {
-    return this._newsCountriesData;
+  public get newsCountriesStaticData() {
+    return this._newsCountriesStaticData;
   }
 
 }

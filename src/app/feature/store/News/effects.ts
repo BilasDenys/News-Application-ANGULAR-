@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, switchAll, switchMap, tap } from 'rxjs';
-import { Action } from 'rxjs/internal/scheduler/Action';
+import { Store } from '@ngrx/store';
+import { catchError, map, mergeMap, of, tap, withLatestFrom } from 'rxjs';
 import { NewsService } from '../../services/news.service';
 import { IResponseTopHeadlinesNews } from '../../types/news';
-import { GetEverythingNews, GetEverythingNewsFail, GetEverythingNewsSuccess, GetTopHeadlinesNewsFail, GetTopHeadlinesNewsSuccess, NewsActionTypes } from './action';
-
+import { 
+  GetEverythingNewsFail, 
+  GetEverythingNewsSuccess, 
+  GetTopHeadlinesNewsFail, 
+  GetTopHeadlinesNewsSuccess, 
+  NewsActionTypes, 
+  ResetEverythingNews
+} from './action';
+import { INewsStore } from './reducer';
 
 
 @Injectable()
@@ -13,35 +20,43 @@ import { GetEverythingNews, GetEverythingNewsFail, GetEverythingNewsSuccess, Get
 export class NewsEffects {
   constructor(
     private actions$: Actions,
-    private newsService: NewsService
+    private newsService: NewsService,
+    private store$: Store<INewsStore>
     ) {}
-
   
-    fetchTopHeadlines$ = createEffect(
-      () =>
-        this.actions$.pipe(
-          ofType(NewsActionTypes.GET_TOP_HEADLINES_NEWS),
-          exhaustMap(action =>
-            this.newsService.fetchTopHeadlinesNews().pipe(
-              tap( () => console.log('from top-headlines action', action)),
-              map((response: IResponseTopHeadlinesNews) => new GetTopHeadlinesNewsSuccess(response)),
-              catchError(error => of( new GetTopHeadlinesNewsFail(error.message)))
-            )
-          )
-        )
+    fetchTopHeadlinesNews$ = createEffect(() => this.actions$.pipe(
+      ofType(NewsActionTypes.GET_TOP_HEADLINES_NEWS),
+      withLatestFrom(this.store$.select( state => state )),
+        tap( response => {
+          const [ , {country, category, currentPage, limit } ] = response;
+          return { country, category, currentPage, limit };
+        }),
+      mergeMap((options) =>
+        this.newsService.fetchTopHeadlinesNews(options).pipe(
+          map(( resp: IResponseTopHeadlinesNews ) => {
+            return new GetTopHeadlinesNewsSuccess( resp )
+          }),
+          catchError( error => of( new GetTopHeadlinesNewsFail( error.message ) )))
+      ))
     );
 
-    fetchEverythingNews$ = createEffect(
-      () =>
-        this.actions$.pipe(
-          ofType(NewsActionTypes.GET_EVERYTHING_NEWS),
-          exhaustMap(action =>
-            this.newsService.fetchTopHeadlinesNews().pipe(
-              map((response: IResponseTopHeadlinesNews) => new GetEverythingNewsSuccess(response)),
-              catchError(error => of( new GetEverythingNewsFail(error.message)))
-            )
-          )
-        )
-    )
+    fetchEverythingNews$ = createEffect(() => this.actions$.pipe(
+      ofType( NewsActionTypes.GET_EVERYTHING_NEWS ),
+      withLatestFrom( this.store$.select(state => state )),
+        tap( response => {
+          this.store$.dispatch(new ResetEverythingNews());
+          const [ arrayPage, {country, category, currentPage, limit } ] = response;
+          const { payload } = arrayPage;
+          return { country, category, currentPage, limit, payload };
+
+        }),
+      mergeMap((options) =>
+        this.newsService.fetchEverythingNews( options ).pipe(
+          map(( resp: IResponseTopHeadlinesNews ) => {
+            return new GetEverythingNewsSuccess( resp )
+          }),
+          catchError( error => of( new GetEverythingNewsFail( error.message ) )))
+      ))
+  );
       
 }

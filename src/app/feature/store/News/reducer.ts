@@ -1,17 +1,21 @@
 import { NewsActions, NewsActionTypes } from './action';
 
 export interface INewsStore {
+
   isLoading: boolean;
   topHeadlinesNews: [],
   everythingNews: [],
   newsError: string | null,
-  totalResults: number | null,
+  totalResults: number,
   country: string,
   limit: number,
-  category: string
+  category: string,
+  currentPage: number
+
 }
 
 const initialState: INewsStore = {
+
   isLoading: false,
   topHeadlinesNews: [],
   everythingNews: [],
@@ -19,55 +23,106 @@ const initialState: INewsStore = {
   totalResults: 0,
   country: 'ua',
   limit: 20,
-  category: 'general'
+  category: 'general',
+  currentPage: 1
+
 }
 
 export const reducer = (state = initialState, action: NewsActions) => { 
   switch (action.type) {
 
-    case NewsActionTypes.GET_EVERYTHING_NEWS:
+    case NewsActionTypes.GET_TOP_HEADLINES_NEWS:
+
       return {
-        ...state, isLoading: true
+        ...state, 
+        isLoading: true,
+        everythingNews: []
       }
 
-    case NewsActionTypes.GET_EVERYTHING_NEWS_SUCCESS:
+    case NewsActionTypes.GET_TOP_HEADLINES_NEWS_SUCCESS:
+
       return {
-        ...state, isLoading: false, topHeadlinesNews: action.payload.articles, totalResults: action.payload.totalResult
+        ...state, 
+        isLoading: false, 
+        topHeadlinesNews: [ ...state.topHeadlinesNews, ...action.payload.articles ],
+        totalResults: action.payload.totalResults
       }
     
-    case NewsActionTypes.GET_EVERYTHING_NEWS_SUCCESS:
+    case NewsActionTypes.GET_TOP_HEADLINES_NEWS_FAIL:
+
       return {
-        ...state, isLoading: false, newsError: action.payload
+        ...state, 
+        isLoading: false, 
+        newsError: action.payload
       }
+
+    case NewsActionTypes.RESET_TOP_HEADLINES_NEWS:
+      return {
+        ...state, topHeadlinesNews: []
+      }  
 
     case NewsActionTypes.GET_EVERYTHING_NEWS:
+
       return {
-        ...state, isLoading: true
+        ...state, 
+        isLoading: true,
+        currentPage: 1
       }
 
     case NewsActionTypes.GET_EVERYTHING_NEWS_SUCCESS:
+
       return {
-        ...state, isLoading: false, everythingNews: action.payload
+        ...state, 
+        isLoading: false, 
+        everythingNews: [ ...state.everythingNews, ...action.payload.articles ], 
+        totalResults: action.payload.totalResults
       }
     
     case NewsActionTypes.GET_EVERYTHING_NEWS_FAIL:
+
       return {
-        ...state, isLoading: false, newsError: action.payload
+        ...state, 
+        isLoading: false, 
+        newsError: action.payload
       }
+
+    case NewsActionTypes.RESET_EVERYTHING_NEWS_FAIL:
+
+      return {
+        ...state, everythingNews: []
+      }  
     
     case NewsActionTypes.SET_LIMIT:
+
       return {
-        ...state, limit: action.payload
+        ...state, 
+        limit: action.payload,
       }
     
     case NewsActionTypes.SET_COUNTRY:
+
       return {
-        ...state, country: action.payload
+        ...state, 
+        country: action.payload,
+        currentPage: 1
       }
     
     case NewsActionTypes.SET_CATEGORY:
+      
       return {
-        ...state, category: action.payload
+        ...state, 
+        category: action.payload,
+        currentPage: 1
+      }
+      
+    case NewsActionTypes.GET_PAGE:
+      return state  
+    
+    case NewsActionTypes.SET_PAGE:
+      
+      return {
+        ...state, 
+        currentPage: action.payload
       }
 
     default:
