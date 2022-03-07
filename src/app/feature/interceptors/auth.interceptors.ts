@@ -18,7 +18,9 @@ export class AuthInterceptors implements HttpInterceptor {
     const authRequest = req.clone({
        headers: req.headers
           .set('X-Api-Key', `12e5e5b3e74b4f93b843d60c1b5538ca`)
-          .set('Access-Control-Allow-Origin','*'),
+          .set('Access-Control-Allow-Origin','*')
+          .set('Access-Control-Allow-Methods', 'GET')
+          .set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With'),
        params: req.params.set('language', 'en')
     });
 
