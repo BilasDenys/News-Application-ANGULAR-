@@ -6,25 +6,27 @@
 
   <main class="everything__main">
 
-    <section class="everything__info">
-
-      <section class="everything__title">
-        Everything
-      </section>
-
-      <section class="everything__results">
-        results: {{ results$ | async }}
-      </section>
-
-    </section>
+    
 
     <div class="everything__error">
-      
+
       <app-error *ngIf="(errorMessage$ | async); else contentTemplate"></app-error>
 
     </div>
 
     <ng-template #contentTemplate>
+
+      <section class="everything__info">
+
+        <section class="everything__title">
+          Everything
+        </section>
+  
+        <section class="everything__results">
+          results: {{ results$ | async }}
+        </section>
+  
+      </section>
 
         <div class="everything__wrapper">
 

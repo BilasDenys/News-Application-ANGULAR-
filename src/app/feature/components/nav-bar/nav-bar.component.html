@@ -18,21 +18,21 @@
 
     <div class="navigation__fields selects">
 
-        <select name="country" 
+        <select name="navigation__country" 
                 (change)="change($event)" 
                 [(ngModel)]="selectedCountry">
           <option>Chose Country</option>
         
-          <option value="{{ country.code }}" 
+          <option class="navigation__option" value="{{ country.code }}" 
                   *ngFor="let country of countries"
                 > {{ country.country }}</option> 
         </select>
         
-        <select name="limit" 
+        <select name="navigation__limit" 
                 (change)="change($event)" 
                 [(ngModel)]="selectedLimit">
       
-          <option value="{{ limit.count }}" 
+          <option class="navigation__option" value="{{ limit.count }}" 
                   *ngFor="let limit of limits"
                 > {{ limit.title }} </option>
         </select>
@@ -42,11 +42,6 @@
   </div>
 
 </nav>
-
-<div class="navbar__field">
-
-
-</div>
 
 
 
