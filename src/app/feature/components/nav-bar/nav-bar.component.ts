@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { INewsCountryCode, NewsService } from '../../services/news.service';
 import { GetEverythingNews, GetTopHeadlinesNews, SetCountry, SetLimit } from '../../store/News/action';
 import { INewsStore } from '../../store/News/reducer';
