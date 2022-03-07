@@ -11,12 +11,18 @@ import { newsEffects } from './store';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptors } from './interceptors/auth.interceptors';
+import { PostComponent } from './components/post/post.component';
+import { PaginationButtonComponent } from './components/pagination-button/pagination-button.component';
+import { EverythingPageComponent } from './pages/everything-page/everything-page.component';
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
     HomePageComponent,
     NavBarComponent,
+    PostComponent,
+    PaginationButtonComponent,
+    EverythingPageComponent,
   ],
   imports: [
     CommonModule,

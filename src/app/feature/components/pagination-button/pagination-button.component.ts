@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { SetPage } from '../../store/News/action';
+import { GetTopHeadlinesNews, ResetTopHeadlinesNews, SetPage } from '../../store/News/action';
 import { INewsStore } from '../../store/News/reducer';
 import { getPageSelector } from '../../store/News/selectors';
 
-
+interface IButtonElemProps {
+  title: string;
+}
 @UntilDestroy()
 @Component({
   selector: 'app-pagination-button',
@@ -14,18 +16,27 @@ import { getPageSelector } from '../../store/News/selectors';
 })
 export class PaginationButtonComponent implements OnInit {
 
-  currentPage!: number;
+  public currentPage!: number;
+
+  @Input() buttonElemProps!: IButtonElemProps;
 
   constructor(private store$: Store<INewsStore>) { }
 
   ngOnInit(): void {
-    this.store$.pipe(select(getPageSelector), 
-    untilDestroyed(this))
-    .subscribe( (currentPage: number) => this.currentPage = currentPage)
+
+    this.store$.pipe(
+      select( getPageSelector),
+      untilDestroyed(this)
+      ).subscribe((page: number) => this.currentPage = page )
+
   }
 
-  public  selectedPage(page: number): void {
-    this.store$.dispatch( new SetPage( page ) )
+
+  setCurrentPage(page: number): void {
+      this.store$.dispatch( new ResetTopHeadlinesNews() );
+      this.store$.dispatch( new SetPage(page) );
+      this.store$.dispatch( new GetTopHeadlinesNews() );
+      window.scrollTo(0,0);
   }
 
 }

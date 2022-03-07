@@ -1,44 +1,78 @@
-<p>home-page works!</p>
-<app-nav-bar></app-nav-bar>
-<!-- <h1>Current Page:  {{ page  }}</h1>
-<h1>Total Results :  {{ totalResults }}</h1> -->
-
-<div class="actions">
-  <button (click)="change(-1)"> - </button>
-  <div class="actions" *ngFor="let buttonElem of pagination">
-      <button>
-          {{ buttonElem.title }}
-      </button>
-  </div>
-  <button (click)="change(1)"> + </button>
-</div>
+<div class="home">
+  <header class="home__header">
+    <app-nav-bar></app-nav-bar>
+      
+   
+  </header>
 
 
 
-<ul>
 
-  <li (click)="tabChange(category)" 
-      *ngFor="let category of categories" 
-    > {{ category | titlecase }}
-  </li>
+  <main class="home__main main" >
 
-</ul>
+    <ul class="main__menu">
 
-<div class="container">
-  <span [ngSwitch]="category">
+      <li class="main__list" (click)="tabChange(category)"  [ngClass]="{ 'active': categoryFromTS === category }"
+            *ngFor="let category of categories" 
+          > {{ category | titlecase }}
+      </li>
+      
+    </ul>
 
-    <div class="wrapper" 
-         *ngFor="let category of categories">
 
-      <p *ngSwitchCase="category">
-        {{ category | titlecase }}
-      </p>
+    <main class="main__content content">
 
+      <section class="content__header">
+
+        <div class="content__title">
+          {{categoryFromTS | titlecase}}
+        </div>
+
+        <div class="content__results">
+          Total results: 
+          {{ totalResults }}
+        </div>
+
+      </section>      
+
+      <div class="home__loader" *ngIf="isLoading">
+        Loader...
+      </div>
+
+      <section class="content__switch" [ngSwitch]="categoryFromTS" *ngIf="!isLoading">
+
+        <section  *ngFor="let category of categories">
+    
+          <section *ngSwitchCase="category">
+           <ng-container *ngFor="let article of topHeadlineNews">
+            <app-post [articleProps]="article"></app-post>
+           </ng-container>
+          </section>
+    
+        </section>
+    
+        <p *ngSwitchDefault>
+          General
+        </p>
+    
+      </section>
+
+    </main>
+
+  </main>
+
+  <footer class="home__footer">
+
+    <div class="home__actions ">
+      <button class="button" (click)="change(-1)"> - </button>
+
+      <div class="actions" *ngFor="let buttonElem of pagination">
+          <app-pagination-button [buttonElemProps]="buttonElem"></app-pagination-button>
+      </div>
+
+      <button class="button" (click)="change(1)"> + </button>
     </div>
+  </footer>
 
-    <p *ngSwitchDefault>
-      General
-    </p>
-
-  </span>
 </div>
+

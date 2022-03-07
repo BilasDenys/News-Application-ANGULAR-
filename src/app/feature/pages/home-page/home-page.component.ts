@@ -12,8 +12,11 @@ import {
   getPageSelector, 
   getCategorySelector, 
   getTotalResultsSelector,
-  getLimitSelector
+  getLimitSelector,
+  getTopHeadlinesNewsSelector,
+  getEverythingNewsSelector
 } from '../../store/News/selectors';
+import { ITopHeadlinesArticles } from '../../types/news';
 
 @UntilDestroy()
 @Component({
@@ -25,11 +28,14 @@ import {
 export class HomePageComponent implements OnInit {
 
   public categories!: string[];
-  public category!: string;
+  public categoryFromTS!: string;
   public page!: number;
   private _totalResults!: number;
   private _limit!: number;
   public pagination!: any[];
+  public isLoading!: boolean;
+
+  public topHeadlineNews!: ITopHeadlinesArticles[];
 
   constructor(
     private store$: Store<INewsStore>,
@@ -48,7 +54,7 @@ export class HomePageComponent implements OnInit {
     this.store$.pipe(
       select(getCategorySelector),
       untilDestroyed(this))
-      .subscribe((categoryFromStore: string) => this.category = categoryFromStore);
+      .subscribe((categoryFromStore: string) => this.categoryFromTS = categoryFromStore);
     
     this.store$.pipe(
       select(getPageSelector),
@@ -65,9 +71,28 @@ export class HomePageComponent implements OnInit {
       untilDestroyed(this))
       .subscribe((limit: number) => this._limit = limit )  
 
-    const data = this.localStorageService.getKey('new');
 
-    if ( !data ) {
+    this.store$.pipe(
+      select( getTopHeadlinesNewsSelector ),
+      untilDestroyed(this)
+    ).subscribe( (articles: ITopHeadlinesArticles[]) => {
+
+      this.topHeadlineNews = articles;
+      this.generateButtonForPagination();
+      
+    });
+
+    this.store$.pipe(
+      select (getIsLoadingSelector),
+      untilDestroyed( this))
+      .subscribe( (isLoading: boolean) => {
+        console.log(isLoading)
+        this.isLoading = isLoading
+      })
+
+    const data = this.localStorageService.getKey('news');  
+
+    if ( data.topHeadlinesNews.length === 0 ) {
       new GetTopHeadlinesNews();
     }
 
@@ -84,18 +109,23 @@ export class HomePageComponent implements OnInit {
   }
 
   public tabChange(title: string): void {
-    this.category = title;
+    this.categoryFromTS = title;
 
     this.store$.dispatch( new SetCategory( title ) );
     this.store$.dispatch( new ResetTopHeadlinesNews() )
     this.store$.dispatch( new GetTopHeadlinesNews() );
 
+
   }
 
   change( step: number ) {
-    this.page + step;
-    this.store$.dispatch( new SetPage(this.page) )
+    const page =  this.page + step;
+    this.store$.dispatch( new SetPage(page) )
     this.store$.dispatch( new GetTopHeadlinesNews());
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   private generateButtonForPagination() {

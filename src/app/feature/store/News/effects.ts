@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, mergeMap, of, tap, withLatestFrom } from 'rxjs';
+import { catchError, map, mergeMap, of, tap, timeout, withLatestFrom } from 'rxjs';
 import { NewsService } from '../../services/news.service';
 import { IResponseTopHeadlinesNews } from '../../types/news';
 import { 
@@ -32,7 +32,8 @@ export class NewsEffects {
           return { country, category, currentPage, limit };
         }),
       mergeMap((options) =>
-        this.newsService.fetchTopHeadlinesNews(options).pipe(
+        this.newsService.fetchTopHeadlinesNews(options).pipe( 
+          timeout(2500),
           map(( resp: IResponseTopHeadlinesNews ) => {
             return new GetTopHeadlinesNewsSuccess( resp )
           }),
@@ -52,6 +53,7 @@ export class NewsEffects {
         }),
       mergeMap((options) =>
         this.newsService.fetchEverythingNews( options ).pipe(
+          timeout(2500),
           map(( resp: IResponseTopHeadlinesNews ) => {
             return new GetEverythingNewsSuccess( resp )
           }),

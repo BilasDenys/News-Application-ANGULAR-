@@ -1,0 +1,58 @@
+<section class="post">
+    <header class="post__header">
+
+      <div class="post__info">
+
+        <section class="post__source" *ngIf="!articleProps.author || articleProps.author === null">
+          {{ articleProps.source.name }}
+        </section>
+
+        <section class="post__author">
+          {{articleProps.author}}
+        </section>
+
+        <section class="post__time">
+          {{articleProps.publishedAt | date}}
+        </section>
+
+      </div>
+
+      <section class="post__title">
+        {{articleProps.title}}
+      </section>
+
+    </header>
+
+    <main class="post__main">
+
+      <div class="post__content">
+
+        <section class="post__skeleton" *ngIf="!articleProps.urlToImage">
+
+          News
+
+        </section>
+
+        <img src="{{articleProps.urlToImage}}" alt="" class="post__img">
+
+        <section class="post__description">
+          {{articleProps.description}}
+        </section>
+
+      </div>
+
+    </main>
+
+    <footer class="post__footer">
+
+      <section class="post__action">
+
+        <a class="post__link" href="{{articleProps.url}}" target="_blank">Go</a>
+
+      </section>
+
+    </footer>
+
+</section>
+
+

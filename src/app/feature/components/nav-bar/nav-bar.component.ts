@@ -57,7 +57,11 @@ export class NavBarComponent implements OnInit {
     this.store$
       .pipe(select( getCountrySelector ),
        untilDestroyed(this))
-      .subscribe(( country: string ): string => this.selectedCountry = country );
+      .subscribe(( country: string ): string =>{ 
+        console.log(country)
+        return this.selectedCountry = country;
+       
+      } );
 
     this.store$
       .pipe( select( getLimitSelector ),
@@ -82,7 +86,7 @@ export class NavBarComponent implements OnInit {
 
       this.store$.dispatch( new SetLimit( +value ) );
       this.store$.dispatch( new GetTopHeadlinesNews() );
-
+      
     }
 
   }
