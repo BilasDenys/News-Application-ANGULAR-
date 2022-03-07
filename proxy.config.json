@@ -1,5 +1,5 @@
 {
-  "/v2": {
+  "https://newsapi.org/v2": {
     "target": "http://localhost:4200",
     "secure": false
   }
