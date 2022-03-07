@@ -14,6 +14,7 @@ import { AuthInterceptors } from './interceptors/auth.interceptors';
 import { PostComponent } from './components/post/post.component';
 import { PaginationButtonComponent } from './components/pagination-button/pagination-button.component';
 import { EverythingPageComponent } from './pages/everything-page/everything-page.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { EverythingPageComponent } from './pages/everything-page/everything-page
     PostComponent,
     PaginationButtonComponent,
     EverythingPageComponent,
+    ErrorComponent,
   ],
   imports: [
     CommonModule,

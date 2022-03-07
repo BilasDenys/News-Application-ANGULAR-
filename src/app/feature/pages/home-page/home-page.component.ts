@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { NewsService } from '../../services/news.service';
 import { GetTopHeadlinesNews, ResetTopHeadlinesNews, SetCategory, SetPage } from '../../store/News/action';
@@ -14,7 +15,8 @@ import {
   getTotalResultsSelector,
   getLimitSelector,
   getTopHeadlinesNewsSelector,
-  getEverythingNewsSelector
+  getEverythingNewsSelector,
+  getNewsErrorSelector
 } from '../../store/News/selectors';
 import { ITopHeadlinesArticles } from '../../types/news';
 
@@ -34,6 +36,7 @@ export class HomePageComponent implements OnInit {
   private _limit!: number;
   public pagination!: any[];
   public isLoading!: boolean;
+  public errorMessage$!: Observable<string | null>
 
   public topHeadlineNews!: ITopHeadlinesArticles[];
 
@@ -82,11 +85,12 @@ export class HomePageComponent implements OnInit {
       
     });
 
+    this.errorMessage$ = this.store$.pipe(select( getNewsErrorSelector ))
+
     this.store$.pipe(
       select (getIsLoadingSelector),
       untilDestroyed( this))
       .subscribe( (isLoading: boolean) => {
-        console.log(isLoading)
         this.isLoading = isLoading
       })
 

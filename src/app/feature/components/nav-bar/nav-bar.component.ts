@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -44,7 +45,8 @@ export class NavBarComponent implements OnInit {
 
   constructor(
     private newsService: NewsService,
-    private store$: Store<INewsStore>
+    private store$: Store<INewsStore>,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,11 +59,7 @@ export class NavBarComponent implements OnInit {
     this.store$
       .pipe(select( getCountrySelector ),
        untilDestroyed(this))
-      .subscribe(( country: string ): string =>{ 
-        console.log(country)
-        return this.selectedCountry = country;
-       
-      } );
+      .subscribe(( country: string ): string => this.selectedCountry = country);
 
     this.store$
       .pipe( select( getLimitSelector ),
@@ -96,6 +94,7 @@ export class NavBarComponent implements OnInit {
     if( this.search.trim().length != 0) {
       this.store$.dispatch( new GetEverythingNews(this.search) )
       this.search = '';
+      this.route.navigate(['everything/', this.search])
     }
   }
 

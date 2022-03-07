@@ -1,0 +1,61 @@
+
+@import '../../../../assets/_variables/main.scss';
+
+.everything {
+  height: 83vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  &__header {
+    padding: 1.25rem 0;
+  }
+
+  &__main {
+    min-width: 500px;
+    flex: 1 0 auto;
+
+  }
+
+  &__info {
+
+    margin: .5rem;
+      
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  &__title {
+    font-size: $font_size_28;
+  }
+
+  &__results {
+
+    color: $silver_light;
+    font-size: $font_size_14;
+
+  }
+
+  &__content {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+
+  &__error {
+
+  }
+
+}
+
+a {
+  margin: .5rem 0;
+  color: $silver_regular;
+  text-decoration: underline;
+  cursor: pointer;
+}

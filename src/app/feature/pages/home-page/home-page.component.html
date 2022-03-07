@@ -1,31 +1,28 @@
 <div class="home">
-  <header class="home__header">
-    <app-nav-bar></app-nav-bar>
-      
-   
-  </header>
-
-
-
-
+  
   <main class="home__main main" >
 
     <ul class="main__menu">
 
-      <li class="main__list" (click)="tabChange(category)"  [ngClass]="{ 'active': categoryFromTS === category }"
-            *ngFor="let category of categories" 
+      <li class="main__list" 
+          (click)="tabChange(category)"  
+          [ngClass]="{ 'active': categoryFromTS === category }"
+          *ngFor="let category of categories" 
           > {{ category | titlecase }}
       </li>
       
     </ul>
 
+    <app-error *ngIf="(errorMessage$ | async); else mainTemplate"></app-error>
 
-    <main class="main__content content">
+    <ng-template #mainTemplate>
+
+<main class="main__content content" >
 
       <section class="content__header">
 
         <div class="content__title">
-          {{categoryFromTS | titlecase}}
+          {{ categoryFromTS | titlecase }}
         </div>
 
         <div class="content__results">
@@ -35,33 +32,42 @@
 
       </section>      
 
-      <div class="home__loader" *ngIf="isLoading">
-        Loader...
+      <div class="home__loader" >
+        <app-loader *ngIf="isLoading; else contentTemplate"></app-loader>
       </div>
 
-      <section class="content__switch" [ngSwitch]="categoryFromTS" *ngIf="!isLoading">
+      <ng-template #contentTemplate>
 
-        <section  *ngFor="let category of categories">
-    
-          <section *ngSwitchCase="category">
-           <ng-container *ngFor="let article of topHeadlineNews">
-            <app-post [articleProps]="article"></app-post>
-           </ng-container>
+        <section class="content__switch" [ngSwitch]="categoryFromTS" *ngIf="!isLoading">
+
+          <section  *ngFor="let category of categories">
+      
+            <section *ngSwitchCase="category">
+             <ng-container *ngFor="let article of topHeadlineNews">
+              <app-post [articleProps]="article"></app-post>
+             </ng-container>
+            </section>
+      
           </section>
-    
+      
+          <p *ngSwitchDefault>
+            General
+          </p>
+      
         </section>
-    
-        <p *ngSwitchDefault>
-          General
-        </p>
-    
-      </section>
+        
 
+      </ng-template>
+      
     </main>
+
+    </ng-template>
+
+    
 
   </main>
 
-  <footer class="home__footer">
+  <!-- <footer class="home__footer">
 
     <div class="home__actions ">
       <button class="button" (click)="change(-1)"> - </button>
@@ -72,7 +78,7 @@
 
       <button class="button" (click)="change(1)"> + </button>
     </div>
-  </footer>
+  </footer> -->
 
 </div>
 

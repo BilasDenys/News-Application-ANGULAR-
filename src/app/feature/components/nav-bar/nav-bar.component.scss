@@ -30,8 +30,8 @@
   }
 
   &__search {
-    min-width: 425px;
-
+    min-width: 225px;
+    width: 100%;
     // min-width: 300px;
 
     padding: .5rem 1rem;
@@ -51,6 +51,7 @@
 
   }
 }
+
 
 
 @media (max-width: 576px)  { 

@@ -37,7 +37,7 @@ export class NewsEffects {
           map(( resp: IResponseTopHeadlinesNews ) => {
             return new GetTopHeadlinesNewsSuccess( resp )
           }),
-          catchError( error => of( new GetTopHeadlinesNewsFail( error.message ) )))
+          catchError( error => of( new GetTopHeadlinesNewsFail( error.error.message ) )))
       ))
     );
 
@@ -57,7 +57,7 @@ export class NewsEffects {
           map(( resp: IResponseTopHeadlinesNews ) => {
             return new GetEverythingNewsSuccess( resp )
           }),
-          catchError( error => of( new GetEverythingNewsFail( error.message ) )))
+          catchError( error => of( new GetEverythingNewsFail( error.error.message ) )))
       ))
   );
       
