@@ -1,39 +1,52 @@
-<p>nav-bar works!</p>
+
+<nav class="navigation ">
+
+  <div class="navigation__wrapper wrapper container">
+    <section class="navigation__logo">
+      <a [routerLink]="['/']">News</a>
+    </section>
+
+    <div class="navigation__fields">
+
+      <input class="navigation__search" 
+             type="text" 
+             [(ngModel)]="search" 
+             (keydown.enter)="findSearch()"  
+             placeholder="Search...">
+
+    </div>
+
+    <div class="navigation__fields selects">
+
+        <select name="country" 
+                (change)="change($event)" 
+                [(ngModel)]="selectedCountry">
+          <option>Chose Country</option>
+        
+          <option value="{{ country.code }}" 
+                  *ngFor="let country of countries"
+                > {{ country.country }}</option> 
+        </select>
+        
+        <select name="limit" 
+                (change)="change($event)" 
+                [(ngModel)]="selectedLimit">
+      
+          <option value="{{ limit.count }}" 
+                  *ngFor="let limit of limits"
+                > {{ limit.title }} </option>
+        </select>
+
+    </div>
+
+  </div>
+
+</nav>
 
 <div class="navbar__field">
-  <label class="navbar__label">
-    Search: 
-  </label>
 
-  <input type="text" [(ngModel)]="search" >
-  <div class="navbar__action">
-      <button (click)="findSearch()">Search</button>
-  </div>
-</div>
-
-<div class="navbar__country">
-
-  <select name="country" 
-          (change)="change($event)" 
-          [(ngModel)]="selectedCountry">
-    <option>Chose Country</option>
-  
-    <option value="{{ country.code }}" 
-            *ngFor="let country of countries"
-          > {{ country.country }}</option> 
-  </select>
 
 </div>
 
-<div class="navbar__limit">
 
-  <select name="limit" 
-          (change)="change($event)" 
-          [(ngModel)]="selectedLimit">
 
-    <option value="{{limit.count}}" 
-            *ngFor="let limit of limits"
-          > {{ limit.title}} </option>
-  </select>
-
-</div>

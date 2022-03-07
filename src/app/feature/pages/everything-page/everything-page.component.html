@@ -1,0 +1,52 @@
+<section class="everything">
+
+  <header class="everything__header">
+    <a [routerLink]="['/']">Go to Home Page</a>
+  </header>
+
+  <main class="everything__main">
+
+    <section class="everything__info">
+
+      <section class="everything__title">
+        Everything
+      </section>
+
+      <section class="everything__results">
+        results: {{ results$ | async }}
+      </section>
+
+    </section>
+
+    <div class="everything__error">
+      
+      <app-error *ngIf="(errorMessage$ | async); else contentTemplate"></app-error>
+
+    </div>
+
+    <ng-template #contentTemplate>
+
+        <div class="everything__wrapper">
+
+          <section class="everything__loader" *ngIf=" (isLoading$ | async)">
+
+            <app-loader></app-loader>
+
+          </section>
+
+          <section class="everything__content container" >
+
+            <ng-container *ngFor="let article of ( articles$ | async )"  >
+              <app-post [articleProps]="article"></app-post>
+            </ng-container>
+          
+          </section>
+
+        </div>
+
+    </ng-template>
+  
+
+  </main>
+
+</section>

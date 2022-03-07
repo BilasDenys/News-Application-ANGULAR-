@@ -75,7 +75,6 @@ export class NewsService {
 
   public fetchTopHeadlinesNews(params: any): Observable<IResponseTopHeadlinesNews> {
     const { category, country, limit, currentPage } = params[1].news;
-    console.log(params[1])
     return this.http.get<IResponseTopHeadlinesNews>(`${environment.newsBaseURL}/top-headlines?country=${country}&category=${category}&page=${currentPage}&pageSize=${limit}`);
   }
 

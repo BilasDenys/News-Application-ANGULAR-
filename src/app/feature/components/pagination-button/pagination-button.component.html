@@ -1,1 +1,5 @@
-<p>pagination-button works!</p>
+<button 
+  class="button" 
+  (click)="setCurrentPage(+buttonElemProps.title)"
+  [ngClass]="{'active': currentPage === +buttonElemProps.title}"
+  > {{ buttonElemProps.title }} </button>

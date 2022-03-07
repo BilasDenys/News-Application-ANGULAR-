@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { LoaderComponent } from './components/loader/loader.component'
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LoaderComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -15,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http'
   exports: [
     FormsModule, 
     ReactiveFormsModule, 
-    HttpClientModule
+    HttpClientModule,
+    LoaderComponent
   ]
 })
 export class ShareModule { }

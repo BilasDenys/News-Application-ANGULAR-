@@ -1,0 +1,210 @@
+@import '../../../../assets/_variables/main.scss';
+
+.home {
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  // &__loader {
+
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   width: 100%;
+  //   height: 100%;
+  //   max-width: 500px;
+  //   min-width: 280px;
+  //   min-height: 300px;
+  //   background-color: #fafafa;
+  //   border-radius: 5px;
+  //   box-shadow: $shadow_34;
+  //   margin-top: 4rem;
+
+  // }
+
+  &__main {
+    flex: 1 0 auto;
+  }
+
+  &__actions {
+
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: .5rem;
+
+  }
+
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $white_main;
+
+    flex-shrink: 0;
+  }
+
+ .main {
+
+  flex: 1 0 auto;
+
+  &__menu {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__list {
+    margin: 1rem .15rem;
+    padding: .75rem 1.25rem;
+
+    &:hover {
+      background-color:#fafafa;
+      border-radius: 5px;
+    }
+  }
+
+  &__content {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+  .content {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__header {
+
+      width: 95%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+    }
+
+    &__title {
+      font-size: $font_size_28;
+    }
+
+    &__category {
+
+      font-size: $font_size_28;
+      color: $silver_regular;
+      display: flex;
+      justify-content: space-between;
+
+    }
+
+    &__results {
+
+      color: $silver_light;
+      font-size: $font_size_14;
+
+    }
+
+  }
+
+}
+
+.active {
+  background-color:#fafafa;
+  border-radius: 5px;
+  box-shadow: $shadow_34;
+}
+
+
+
+
+@media (max-width: 375px) { 
+
+  .home {
+    .content {
+
+      &__header {
+
+        width: 90%;
+
+      }
+    }
+  }
+}
+
+
+@media (max-width: 576px) { 
+
+  .home {
+    .main {
+
+      &__menu {
+  
+        flex-direction: column;
+        align-items: center;
+        margin-top: .5rem;
+  
+      }
+  
+      &__list {
+  
+        margin: .25rem .5rem;
+        padding: 0.25rem 0.75rem;
+  
+      }
+  
+    }
+
+    .content {
+
+      &__header {
+
+        width: 90%;
+
+      }
+
+      &__title {
+
+        font-size: $font_size_20;
+
+      }
+
+      &__results {
+
+        font-size: $font_size_14;
+
+      }
+
+    }
+
+  }
+
+}
+
+@media   (max-width: 768px) { 
+
+  .home {
+    .main {
+
+      &__menu {
+  
+        margin-top: .5rem;
+  
+      }
+  
+      &__list {
+  
+        margin: .25rem .5rem;
+        padding: 0.25rem 0.75rem;
+  
+      }
+  
+    }
+  }
+
+}
+

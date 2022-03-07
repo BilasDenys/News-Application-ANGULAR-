@@ -27,8 +27,13 @@ export class AuthInterceptors implements HttpInterceptor {
             // if (event instanceof HttpResponse) console.log('Server response');
           },
           (err) => {
-            if (err instanceof HttpErrorResponse) {
-              if (err.status == 401)  new GetTopHeadlinesNewsFail(err.message);
+            console.log('from interceptor ',err.error);
+            
+            if ( err instanceof HttpErrorResponse ) {
+              
+              if ( err.status == 401 )  new GetTopHeadlinesNewsFail(err.error.message);
+
+              if ( err.status == 429 )  new GetTopHeadlinesNewsFail( err.error.message);
             }
           }
         )

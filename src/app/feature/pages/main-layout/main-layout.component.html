@@ -1,2 +1,33 @@
-<p>main-layout works!</p>
-<router-outlet></router-outlet>
+<div class="root">
+
+  <header class="root__header">
+
+    <app-nav-bar></app-nav-bar>
+
+  </header>
+
+  <main class="root__main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="root__footer">
+
+      <div class="root__actions " *ngIf=" totalResults !== 0">
+        <button class="button" (click)="change(-1)"> - </button>
+  
+        <div class="actions" *ngFor="let buttonElem of pagination">
+            <app-pagination-button [buttonElemProps]="buttonElem"></app-pagination-button>
+        </div>
+  
+        <button class="button" (click)="change(1)"> + </button>
+      </div>
+
+  </footer>
+
+</div>
+
+
+
+
+
+

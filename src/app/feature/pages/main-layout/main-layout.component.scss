@@ -1,0 +1,47 @@
+@import '../../../../assets/_variables/main.scss';
+
+.root {
+  min-height: 100vh;
+
+  &__header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    &__main {
+
+      display: flex;
+      justify-content: center;
+
+    }
+
+  }
+
+  &__main {
+    flex: 1 0 auto;
+  }
+
+  &__actions {
+
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: .5rem;
+
+  }
+
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $white_main;
+
+    flex-shrink: 0;
+  }
+
+}

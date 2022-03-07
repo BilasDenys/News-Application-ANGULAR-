@@ -21,7 +21,7 @@ const initialState: INewsStore = {
   everythingNews: [],
   newsError: '',
   totalResults: 0,
-  country: 'ua',
+  country: 'us',
   limit: 20,
   category: 'general',
   currentPage: 1
@@ -112,7 +112,8 @@ export const reducer = (state = initialState, action: NewsActions) => {
       return {
         ...state, 
         category: action.payload,
-        currentPage: 1
+        currentPage: 1,
+        totalResults: 0
       }
       
     case NewsActionTypes.GET_PAGE:
