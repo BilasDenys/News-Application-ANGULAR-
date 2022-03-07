@@ -1,4 +1,7 @@
-import { IEnvironment } from './environment';
+interface IEnvironment {
+  production: boolean;
+  newsBaseURL: string;
+}
 
 export const environment: IEnvironment = {
   production: true,
